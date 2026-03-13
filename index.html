@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task Manager (Vanilla JS)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:," />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Task Manager</h1>
+    <div class="header-actions">
+      <button id="themeToggle" class="btn secondary" aria-label="Toggle theme">🌙 Dark</button>
+    </div>
+  </header>
+
+  <!-- Toast / Notification area -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="container">
+    <!-- Left column: Create/Update form -->
+    <section class="card">
+      <h2 id="formTitle">Add Task</h2>
+      <form id="taskForm" novalidate>
+        <input type="hidden" id="taskId" />
+
+        <div class="form-group">
+          <label for="title">Title <span class="req">*</span></label>
+          <input id="title" name="title" type="text" placeholder="e.g., Finish assignment" required />
+          <small class="error" id="titleError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="3" placeholder="Add details (optional)"></textarea>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="priority">Priority <span class="req">*</span></label>
+            <select id="priority" name="priority" required>
+              <option value="">Select priority</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+            <small class="error" id="priorityError"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category <span class="req">*</span></label>
+            <select id="category" name="category" required>
+              <option value="">Select category</option>
+              <option value="Personal">Personal</option>
+              <option value="Work">Work</option>
+              <option value="Urgent">Urgent</option>
+              <option value="__custom">Custom…</option>
+            </select>
+            <input id="customCategory" class="hidden" type="text" placeholder="Type a new category" />
+            <small class="error" id="categoryError"></small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary" id="saveBtn">Add Task</button>
+          <button type="button" class="btn" id="resetBtn">Reset</button>
+        </div>
+
+        <p class="hint">
+          Tips: press <kbd>n</kbd> to create, <kbd>/</kbd> to search, <kbd>t</kbd> to toggle theme.
+        </p>
+      </form>
+    </section>
+
+    <!-- Right column: Controls + List -->
+    <section class="card">
+      <div class="tasks-header">
+        <h2>Tasks</h2>
+        <div class="counters">
+          <span id="countTotal" class="badge">Total: 0</span>
+          <span id="countActive" class="badge">Active: 0</span>
+          <span id="countCompleted" class="badge">Completed: 0</span>
+        </div>
+      </div>
+
+      <div class="controls grid-3">
+        <div class="form-group">
+          <label for="search">Search</label>
+          <input id="search" type="text" placeholder="Search title or description..." />
+        </div>
+
+        <div class="form-group">
+          <label for="filterCategory">Filter by Category</label>
+          <select id="filterCategory">
+            <option value="all">All</option>
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Urgent">Urgent</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sortPriority">Sort by Priority</label>
+          <select id="sortPriority">
+            <option value="none">None</option>
+            <option value="desc">High → Low</option>
+            <option value="asc">Low → High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="controls">
+        <fieldset class="status-filter">
+          <legend>Status</legend>
+          <label><input type="radio" name="status" value="all" checked /> All</label>
+          <label><input type="radio" name="status" value="active" /> Active</label>
+          <label><input type="radio" name="status" value="completed" /> Completed</label>
+        </fieldset>
+      </div>
+
+      <div id="dragHint" class="hint small">
+        You can drag and reorder tasks when
+        search/filter/sort are not active.
+      </div>
+
+      <div id="taskList" class="task-list" aria-live="polite"></div>
+
+      <div id="emptyState" class="empty hidden" aria-hidden="true">
+        <svg width="120" height="90" viewBox="0 0 120 90" aria-hidden="true">
+          <rect x="15" y="20" width="90" height="55" rx="8" fill="var(--badge)"></rect>
+          <rect x="28" y="35" width="64" height="6" rx="3" fill="var(--border)"></rect>
+          <rect x="28" y="47" width="44" height="6" rx="3" fill="var(--border)"></rect>
+        </svg>
+        <p>No tasks yet. Add your first task on the left.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer removed as requested -->
+
+  <script src="app.js" defer></script>
+</body>
+</html>
